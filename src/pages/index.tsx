@@ -1,18 +1,13 @@
 import Image from 'next/image'
+import Link from 'next/link' /** Link avoids refreshing using SPA */
 
 import { useKeenSlider } from 'keen-slider/react'
 
 import { HomeContainer, Product } from '../styles/pages/home'
 
-import shirt1 from '../assets/shirts/1.png'
-import shirt2 from '../assets/shirts/2.png'
-import shirt3 from '../assets/shirts/3.png'
-import shirt4 from '../assets/shirts/4.png'
-
 import 'keen-slider/keen-slider.min.css'
-import { useEffect, useState } from 'react'
 import { stripe } from '../lib/stripe'
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from 'next'
 import Stripe from 'stripe'
 
 interface HomeProps {
@@ -36,14 +31,16 @@ export default function Home({ products }: HomeProps) {
     <HomeContainer ref={sliderRef} className="keen-slider">
       {products.map((product) => {
         return (
-          <Product key={product.id} className="keen-slider__slide">
-            <Image src={product.imageUrl} width={520} height={480} alt="" />
+          <Link href={`/product/${product.id}`} key={product.id}>
+            <Product className="keen-slider__slide">
+              <Image src={product.imageUrl} width={520} height={480} alt="" />
 
-            <footer>
-              <strong>{product.name}</strong>
-              <span>$ {product.price.toFixed(2)}</span>
-            </footer>
-          </Product>
+              <footer>
+                <strong>{product.name}</strong>
+                <span>{product.price}</span>
+              </footer>
+            </Product>
+          </Link>
         )
       })}
     </HomeContainer>
@@ -51,16 +48,25 @@ export default function Home({ products }: HomeProps) {
 }
 
 /* 
-With the getServerSideProps the page will be displayed only after all data was fetched and it's available 
+  With the getServerSideProps the page will be displayed only after all data was fetched and it's available:
+  export const getServerSideProps: GetServerSideProps = async () => {
+  Also, getServerSide props is executed on every request.
 */
 
-export const getServerSideProps: GetServerSideProps = async () => {
+/*
+  With the getStaticPros, it uses cache to improve user experience, however, it works only on production mode. 
+  On development mode, it works like getServerSideProps.
+  It just can be used by all users. Dinamic and personal features must not be put in getStaticProps, 
+  otherwise, every user will see the same.
+*/
+
+export const getStaticProps: GetStaticProps = async () => {
   // await new Promise((resolve) => setTimeout(resolve, 8000))
   // console.log('rodou')
 
   const response = await stripe.products.list({
     expand: ['data.default_price'],
-  })
+  }) // expand -> property that allows us to get related data
 
   const products = response.data.map((product) => {
     const price = product.default_price as Stripe.Price
@@ -70,7 +76,10 @@ export const getServerSideProps: GetServerSideProps = async () => {
       name: product.name,
       imageUrl: product.images[0],
       url: product.url,
-      price: price.unit_amount / 100,
+      price: new Intl.NumberFormat('us', {
+        style: 'currency',
+        currency: 'USD',
+      }).format(price.unit_amount / 100),
     }
   })
 
@@ -78,6 +87,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: {
       products,
     },
+    revalidate: 60 * 60 * 2, // 2 hours
   }
 }
 
