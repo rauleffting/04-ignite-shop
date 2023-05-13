@@ -18,7 +18,7 @@ export const Header = styled('header', {
   justifyContent: 'space-between',
 })
 
-export const Chart = styled('div', {
+export const Cart = styled('div', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
