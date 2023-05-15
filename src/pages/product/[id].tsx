@@ -63,7 +63,7 @@ export default function Product({ product }: ProductProps) {
             disabled={isCreatingCheckoutSession}
             onClick={handleBuyProduct}
           >
-            Buy now
+            Add to Cart
           </button>
         </ProductDetails>
       </ProductContainer>
