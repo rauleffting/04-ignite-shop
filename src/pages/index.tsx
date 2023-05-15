@@ -5,12 +5,13 @@ import Link from 'next/link' /** Link avoids refreshing using SPA */
 
 import { useKeenSlider } from 'keen-slider/react'
 
-import { HomeContainer, Product } from '../styles/pages/home'
+import { HomeContainer, Icon, Product } from '../styles/pages/home'
 
 import 'keen-slider/keen-slider.min.css'
 import { stripe } from '../lib/stripe'
 import { GetStaticProps } from 'next'
 import Stripe from 'stripe'
+import { Handbag } from '@phosphor-icons/react'
 
 interface HomeProps {
   products: {
@@ -47,8 +48,13 @@ export default function Home({ products }: HomeProps) {
                 <Image src={product.imageUrl} width={520} height={480} alt="" />
 
                 <footer>
-                  <strong>{product.name}</strong>
-                  <span>{product.price}</span>
+                  <div className="product-info-wrapper">
+                    <strong>{product.name}</strong>
+                    <span>{product.price}</span>
+                  </div>
+                  <Icon>
+                    <Handbag size={32} />
+                  </Icon>
                 </footer>
               </Product>
             </Link>

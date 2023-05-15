@@ -43,14 +43,20 @@ export const Product = styled('div', {
     transition: 'all 0.2s ease-in-out',
 
     strong: {
-      fontSize: '$lg',
+      fontSize: '$md',
       color: '$gray100',
+      lineHeight: '2rem',
     },
 
     span: {
       fontSize: '$xl',
-      fontWeight: 'bold',
+      fontWeight: '700',
       color: '$green300',
+    },
+
+    '.product-info-wrapper': {
+      display: 'flex',
+      flexDirection: 'column',
     },
   },
 
@@ -59,5 +65,18 @@ export const Product = styled('div', {
       transform: 'translateY(0%)',
       opacity: 1,
     },
+  },
+})
+
+export const Icon = styled('div', {
+  alignItems: 'center',
+  justifyContent: 'center',
+  background: '$green500',
+  padding: '0.75rem',
+  borderRadius: '6px',
+  border: 'none',
+
+  svg: {
+    color: 'white',
   },
 })
