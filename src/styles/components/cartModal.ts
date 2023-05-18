@@ -132,6 +132,7 @@ export const CheckoutButton = styled('button', {
     fontWeight: '700',
     fontSize: '1.125rem',
     lineHeight: '160%',
+    color: '$white',
   },
 
   '&:hover': {
