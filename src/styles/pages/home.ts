@@ -2,10 +2,56 @@ import { styled } from '..'
 
 export const HomeContainer = styled('main', {
   display: 'flex',
+  '.button-back': {
+    position: 'fixed',
+    top: '0',
+    left: '0',
+    height: '100vh',
+    width: '136px',
+    zIndex: '1',
+
+    background:
+      'linear-gradient(90deg, rgba(18, 18, 20, 0) 0%, rgba(18, 18, 20, 0.75) 100%)',
+    transform: 'matrix(-1, 0, 0, 1, 0, 0)',
+    border: 'none',
+
+    '&:hover': {
+      cursor: 'pointer',
+    },
+
+    svg: {
+      color: '$gray300',
+    },
+  },
+
+  '.button-forward': {
+    position: 'fixed',
+    top: '0',
+    right: '0',
+    height: '100vh',
+    width: '136px',
+    zIndex: '1',
+
+    background:
+      'linear-gradient(90deg, rgba(18, 18, 20, 0) 0%, rgba(18, 18, 20, 0.75) 100%)',
+    border: 'none',
+
+    '&:hover': {
+      cursor: 'pointer',
+    },
+
+    svg: {
+      color: '$gray300',
+    },
+  },
+})
+
+export const SliderContainer = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
   width: '100%',
-  maxWidth: 'calc(100vw - ((100vw - 1180px) / 2))',
-  marginLeft: 'auto',
-  minHeight: 656,
+  maxWidth: '100vw',
+  padding: '32px 136px',
 })
 
 export const Product = styled('div', {

@@ -11,6 +11,7 @@ export const SuccessContainer = styled('main', {
   h1: {
     fontSize: '$2xl',
     color: '$gray100',
+    marginTop: '3rem',
   },
 
   p: {
@@ -36,22 +37,25 @@ export const SuccessContainer = styled('main', {
   },
 })
 
-export const ProductsContainer = styled('div', {
-  display: 'flex',
-})
-
 export const ImageContainer = styled('main', {
-  width: '100%',
-  maxWidth: 140,
-  height: 140,
-  background: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',
-  borderRadius: '100%',
-  padding: '0.25rem',
-  marginTop: '4rem',
-
   display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
+
+  div: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    maxWidth: 140,
+    height: 140,
+    background: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',
+    borderRadius: '100%',
+    padding: '0.25rem',
+    marginTop: '4rem',
+  },
+
+  'div + div': {
+    marginLeft: 'calc(-100px/2)',
+  },
 
   img: {
     objectFit: 'cover',

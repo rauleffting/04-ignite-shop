@@ -25,6 +25,7 @@ export default function Success() {
   const products = [
     { imageUrl: shirt, name: 'Top Shirt' },
     { imageUrl: shirt, name: 'Top Shirt' },
+    { imageUrl: shirt, name: 'Top Shirt' },
   ]
 
   const costumerName = 'Raul Effting'
@@ -37,21 +38,15 @@ export default function Success() {
       </Head>
 
       <SuccessContainer>
-        <h1>Purchase made!</h1>
-
-        <ProductsContainer>
+        <ImageContainer>
           {products.map((product, index) => (
-            <ImageContainer>
-              <Image
-                src={product.imageUrl}
-                width={140}
-                height={140}
-                alt=""
-                key={index}
-              />
-            </ImageContainer>
+            <div key={index}>
+              <Image src={product.imageUrl} width={140} height={140} alt="" />
+            </div>
           ))}
-        </ProductsContainer>
+        </ImageContainer>
+
+        <h1>Purchase made!</h1>
 
         <p>
           Woohoo! <strong>{costumerName}</strong>, your purchase of{' '}
