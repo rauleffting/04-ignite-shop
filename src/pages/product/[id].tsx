@@ -7,40 +7,17 @@ import Image from 'next/image'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { stripe } from '../../lib/stripe'
 import Stripe from 'stripe'
-import axios from 'axios'
-import { useState } from 'react'
+import { useContext } from 'react'
 import Head from 'next/head'
+import { CartContext } from '../../contexts/cartContext'
 
-interface ProductProps {
-  product: {
-    id: string
-    name: string
-    imageUrl: string
-    price: number
-    description: string
-    defaultPriceId: string
-  }
-}
+import { GetProductProps } from '../../types/types'
 
-export default function Product({ product }: ProductProps) {
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
-    useState(false)
+export default function Product({ product }: GetProductProps) {
+  const { addToCart, isCreatingCheckoutSession } = useContext(CartContext)
 
-  async function handleBuyProduct() {
-    try {
-      setIsCreatingCheckoutSession(true)
-      const response = await axios.post('/api/checkout', {
-        priceId: product.defaultPriceId,
-      })
-
-      const { checkoutUrl } = response.data
-
-      window.location.href = checkoutUrl
-    } catch (err) {
-      // Conect to Datalog/Sentry to watch
-      setIsCreatingCheckoutSession(false)
-      alert('Error while redirecting to the checkout page.')
-    }
+  function handleAddToCart() {
+    addToCart(product)
   }
 
   return (
@@ -61,7 +38,7 @@ export default function Product({ product }: ProductProps) {
 
           <button
             disabled={isCreatingCheckoutSession}
-            onClick={handleBuyProduct}
+            onClick={handleAddToCart}
           >
             Add to Cart
           </button>
@@ -103,6 +80,7 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
           style: 'currency',
           currency: 'USD',
         }).format(price.unit_amount / 100),
+        unformattedPrice: price.unit_amount / 100,
         description: product.description,
         defaultPriceId: price.id,
       },

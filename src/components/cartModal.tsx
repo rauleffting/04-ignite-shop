@@ -7,10 +7,46 @@ import {
   CloseButton,
   Content,
 } from '../styles/components/cartModal'
-
-import shirt from '../assets/shirt.png'
+import { useContext } from 'react'
+import { CartContext } from '../contexts/cartContext'
+import Product from '../pages/product/[id]'
 
 export default function CartModal() {
+  const {
+    cartItems,
+    setCartItems,
+    isCreatingCheckoutSession,
+    setIsCreatingCheckoutSession,
+  } = useContext(CartContext)
+
+  // async function handleCheckout() {
+  //   try {
+  //     setIsCreatingCheckoutSession(true)
+  //     const response = await axios.post('/api/checkout', {
+  //       priceId: product.defaultPriceId,
+  //     })
+
+  //     const { checkoutUrl } = response.data
+
+  //     window.location.href = checkoutUrl
+  //   } catch (err) {
+  //     // Conect to Datalog/Sentry to watch
+  //     setIsCreatingCheckoutSession(false)
+  //     alert('Error while redirecting to the checkout page.')
+  //   }
+  // }
+
+  function handleRemoveItem() {}
+
+  const totalValue = new Intl.NumberFormat('us', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(
+    cartItems.reduce((total, product) => {
+      return total + product.unformattedPrice
+    }, 0),
+  )
+
   return (
     <Dialog.Portal>
       <Content>
@@ -20,45 +56,40 @@ export default function CartModal() {
         <h2>Your cart</h2>
         <div className="wrapper">
           <div className="card-wrapper">
-            <Card>
-              <Image src={shirt} width={95} height={95} alt="shirt image" />
-              <div className="shirt-wrapper">
-                <p>Shirt Y</p>
-                <strong>$ 79.90</strong>
-                <button>Remove</button>
+            {cartItems.map((product) => (
+              <Card key={product.id}>
+                <div className="image-background">
+                  <Image
+                    src={product.imageUrl}
+                    width={95}
+                    height={95}
+                    alt="shirt image"
+                  />
+                </div>
+                <div className="shirt-wrapper">
+                  <p>{product.name}</p>
+                  <strong>{product.price}</strong>
+                  <button onClick={handleRemoveItem}>Remove</button>
+                </div>
+              </Card>
+            ))}
+            <footer>
+              <div className="quantity-value-wrapper">
+                <span>Quantity</span>
+                <span>{cartItems.length}</span>
               </div>
-            </Card>
-            <Card>
-              <Image src={shirt} width={95} height={95} alt="shirt image" />
-              <div className="shirt-wrapper">
-                <p>Shirt Y</p>
-                <strong>$ 79.90</strong>
-                <button>Remove</button>
+              <div className="quantity-value-wrapper">
+                <strong>Total value:</strong>
+                <h4>{totalValue}</h4>
               </div>
-            </Card>
-            <Card>
-              <Image src={shirt} width={95} height={95} alt="shirt image" />
-              <div className="shirt-wrapper">
-                <p>Shirt Y</p>
-                <strong>$ 79.90</strong>
-                <button>Remove</button>
-              </div>
-            </Card>
+              <CheckoutButton
+                disabled={isCreatingCheckoutSession}
+                // onClick={handleCheckout}
+              >
+                <span>Checkout</span>
+              </CheckoutButton>
+            </footer>
           </div>
-
-          <footer>
-            <div className="quantity-value-wrapper">
-              <span>Quantity</span>
-              <span>3 items</span>
-            </div>
-            <div className="quantity-value-wrapper">
-              <strong>Total value:</strong>
-              <h4>$ 270.00</h4>
-            </div>
-            <CheckoutButton>
-              <span>Checkout</span>
-            </CheckoutButton>
-          </footer>
         </div>
       </Content>
     </Dialog.Portal>

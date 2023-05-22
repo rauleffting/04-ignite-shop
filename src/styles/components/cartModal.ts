@@ -88,6 +88,11 @@ export const Card = styled('div', {
   display: 'flex',
   gap: '1.25rem',
 
+  '.image-background': {
+    background: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',
+    borderRadius: '8px',
+  },
+
   '.shirt-wrapper': {
     display: 'flex',
     flexDirection: 'column',
@@ -107,6 +112,7 @@ export const Card = styled('div', {
 
   button: {
     marginTop: '0.5rem',
+    display: 'flex',
     background: 'none',
     color: '$green500',
     border: 'none',
