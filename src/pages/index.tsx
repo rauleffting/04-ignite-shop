@@ -94,11 +94,11 @@ export default function Home({ products }: HomeProps) {
 /* 
   With the getServerSideProps the page will be displayed only after all data was fetched and it's available:
   export const getServerSideProps: GetServerSideProps = async () => {
-  Also, getServerSide props is executed on every request.
+  Also, getServerSideProps is executed on every request.
 */
 
 /*
-  With the getStaticPros, it uses cache to improve user experience, however, it works only on production mode. 
+  With the getStaticProps, it uses cache to improve user experience, however, it works only on production mode. 
   On development mode, it works like getServerSideProps.
   It just can be used by all users. Dynamic and personal features must not be put in getStaticProps, 
   otherwise, every user will see the same.

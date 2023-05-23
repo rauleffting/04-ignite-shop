@@ -1,4 +1,4 @@
-import { useEffect, useState, createContext } from 'react'
+import { useState, createContext } from 'react'
 
 import { CartContextType, CartContextProps, ProductProps } from '../types/types'
 
@@ -14,12 +14,17 @@ export function CartContextProvider({ children }: CartContextProps) {
     setCartItems((state) => [...state, product])
   }
 
-  function removeFromCart() {}
+  function removeFromCart(productToDelete: ProductProps) {
+    setCartItems(
+      cartItems.filter((product) => product.id !== productToDelete.id),
+    )
+  }
 
   return (
     <CartContext.Provider
       value={{
         cartItems,
+        setCartItems,
         addToCart,
         removeFromCart,
         isCreatingCheckoutSession,

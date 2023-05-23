@@ -7,18 +7,26 @@ import Image from 'next/image'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { stripe } from '../../lib/stripe'
 import Stripe from 'stripe'
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Head from 'next/head'
 import { CartContext } from '../../contexts/cartContext'
 
 import { GetProductProps } from '../../types/types'
 
 export default function Product({ product }: GetProductProps) {
-  const { addToCart, isCreatingCheckoutSession } = useContext(CartContext)
+  const { cartItems, addToCart, isCreatingCheckoutSession } =
+    useContext(CartContext)
+
+  const [isTheProductInTheCart, setIsTheProductInTheCart] =
+    useState<boolean>(false)
 
   function handleAddToCart() {
     addToCart(product)
   }
+
+  useEffect(() => {
+    setIsTheProductInTheCart(cartItems.includes(product))
+  }, [cartItems])
 
   return (
     <>
@@ -37,7 +45,7 @@ export default function Product({ product }: GetProductProps) {
           <p>{product.description}</p>
 
           <button
-            disabled={isCreatingCheckoutSession}
+            disabled={isCreatingCheckoutSession || isTheProductInTheCart}
             onClick={handleAddToCart}
           >
             Add to Cart

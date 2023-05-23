@@ -11,24 +11,21 @@ import {
 } from '../styles/pages/success'
 
 import shirt from '../assets/shirt.png'
+import { useContext } from 'react'
+import { CartContext } from '../contexts/cartContext'
 
 interface SuccessProps {
   costumerName: string
-  product: {
+  products: {
     name: string
     imageUrl: string
-  }
+  }[]
 }
 
-// export default function Success({ costumerName, product }: SuccessProps) {
-export default function Success() {
-  const products = [
-    { imageUrl: shirt, name: 'Top Shirt' },
-    { imageUrl: shirt, name: 'Top Shirt' },
-    { imageUrl: shirt, name: 'Top Shirt' },
-  ]
+export default function Success({ costumerName, products }: SuccessProps) {
+  const { setCartItems } = useContext(CartContext)
 
-  const costumerName = 'Raul Effting'
+  setCartItems(null)
 
   return (
     <>
@@ -60,32 +57,32 @@ export default function Success() {
   )
 }
 
-// export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-//   const sessionId = String(query.session_id)
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const sessionId = String(query.session_id)
 
-//   if (!query.session_id) {
-//     return {
-//       redirect: {
-//         destination: '/',
-//         permanent: false,
-//       },
-//     }
-//   }
+  if (!query.session_id) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
 
-//   const session = await stripe.checkout.sessions.retrieve(sessionId, {
-//     expand: ['line_items', 'line_items.data.price.product'],
-//   })
+  const session = await stripe.checkout.sessions.retrieve(sessionId, {
+    expand: ['line_items', 'line_items.data.price.product'],
+  })
 
-//   const costumerName = session.customer_details.name
-//   const product = session.line_items.data[0].price.product as Stripe.Product
+  const costumerName = session.customer_details.name
+  const product = session.line_items.data[0].price.product as Stripe.Product
 
-//   return {
-//     props: {
-//       costumerName,
-//       product: {
-//         name: product.name,
-//         imageUrl: product.images[0],
-//       },
-//     },
-//   }
-// }
+  return {
+    props: {
+      costumerName,
+      product: {
+        name: product.name,
+        imageUrl: product.images[0],
+      },
+    },
+  }
+}

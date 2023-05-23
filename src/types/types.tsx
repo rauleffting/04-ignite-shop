@@ -16,6 +16,7 @@ export interface GetProductProps {
 
 export interface CartContextType {
   cartItems: ProductProps[]
+  setCartItems: (product: ProductProps[]) => void
   addToCart: (product: ProductProps) => void
   removeFromCart: (product: ProductProps) => void
   isCreatingCheckoutSession: boolean

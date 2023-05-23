@@ -52,6 +52,7 @@ export const SliderContainer = styled('div', {
   width: '100%',
   maxWidth: '100vw',
   padding: '32px 136px',
+  marginRight: '136px',
 })
 
 export const Product = styled('div', {
@@ -124,5 +125,9 @@ export const Icon = styled('div', {
 
   svg: {
     color: 'white',
+  },
+
+  '&:hover': {
+    opacity: 0.8,
   },
 })

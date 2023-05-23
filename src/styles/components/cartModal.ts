@@ -71,6 +71,7 @@ export const CloseButton = styled(Dialog.Close, {
   position: 'absolute',
   right: 0,
   margin: '-1.5rem 1.5rem 0 0',
+  outline: 'none',
 
   svg: {
     color: '$gray500',

@@ -9,34 +9,38 @@ import {
 } from '../styles/components/cartModal'
 import { useContext } from 'react'
 import { CartContext } from '../contexts/cartContext'
-import Product from '../pages/product/[id]'
+
+import { ProductProps } from '../types/types'
+import axios from 'axios'
 
 export default function CartModal() {
   const {
     cartItems,
-    setCartItems,
     isCreatingCheckoutSession,
     setIsCreatingCheckoutSession,
+    removeFromCart,
   } = useContext(CartContext)
 
-  // async function handleCheckout() {
-  //   try {
-  //     setIsCreatingCheckoutSession(true)
-  //     const response = await axios.post('/api/checkout', {
-  //       priceId: product.defaultPriceId,
-  //     })
+  async function handleCheckout() {
+    try {
+      setIsCreatingCheckoutSession(true)
+      const response = await axios.post('/api/checkout', {
+        products: cartItems,
+      })
 
-  //     const { checkoutUrl } = response.data
+      const { checkoutUrl } = response.data
 
-  //     window.location.href = checkoutUrl
-  //   } catch (err) {
-  //     // Conect to Datalog/Sentry to watch
-  //     setIsCreatingCheckoutSession(false)
-  //     alert('Error while redirecting to the checkout page.')
-  //   }
-  // }
+      window.location.href = checkoutUrl
+    } catch (err) {
+      // Conect to Datalog/Sentry to watch
+      setIsCreatingCheckoutSession(false)
+      alert('Error while redirecting to the checkout page.')
+    }
+  }
 
-  function handleRemoveItem() {}
+  function handleRemoveItem(productToDelete: ProductProps) {
+    removeFromCart(productToDelete)
+  }
 
   const totalValue = new Intl.NumberFormat('us', {
     style: 'currency',
@@ -69,7 +73,9 @@ export default function CartModal() {
                 <div className="shirt-wrapper">
                   <p>{product.name}</p>
                   <strong>{product.price}</strong>
-                  <button onClick={handleRemoveItem}>Remove</button>
+                  <button onClick={() => handleRemoveItem(product)}>
+                    Remove
+                  </button>
                 </div>
               </Card>
             ))}
@@ -84,7 +90,7 @@ export default function CartModal() {
               </div>
               <CheckoutButton
                 disabled={isCreatingCheckoutSession}
-                // onClick={handleCheckout}
+                onClick={handleCheckout}
               >
                 <span>Checkout</span>
               </CheckoutButton>
